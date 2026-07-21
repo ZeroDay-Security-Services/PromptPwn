@@ -58,10 +58,15 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [tiers, setTiers] = useState(null);
   const [error, setError] = useState(null);
+  const [rank, setRank] = useState("—");
 
   useEffect(() => {
     api.tiers(token).then(d => setTiers(d.tiers)).catch(e => setError(e.message));
-  }, [token]);
+    api.leaderboard(token).then(d => {
+      const idx = d.leaderboard.findIndex(r => r.handle === user?.handle);
+      if (idx !== -1) setRank(`#${idx + 1}`);
+    }).catch(console.error);
+  }, [token, user?.handle]);
 
   const solvedCount = tiers ? tiers.flatMap(t => t.labs).filter(l => l.solved).length : 0;
   const totalLabs = tiers ? tiers.flatMap(t => t.labs).length : 30;
@@ -92,7 +97,7 @@ export default function Dashboard() {
         <div className="flex gap-4 mb-10 flex-wrap">
           <StatBlock label="Points" value={user?.points ?? 0} icon={Zap} color="#E8283F" />
           <StatBlock label="Labs solved" value={`${solvedCount}/${totalLabs}`} icon={Target} color="#39FF7A" />
-          <StatBlock label="Rank" value="—" icon={TrendingUp} color="#3DAFFF" />
+          <StatBlock label="Rank" value={rank} icon={TrendingUp} color="#3DAFFF" />
           <StatBlock label="Tiers" value={tiers.length} icon={Award} color="#FFD23D" />
         </div>
 
