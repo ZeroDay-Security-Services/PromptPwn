@@ -167,7 +167,7 @@ export default function Landing() {
               <span className="w-1.5 h-1.5 rounded-full bg-term shadow-glow-term animate-pulse" />
               <span className="font-mono text-[11px] text-term tracking-widest uppercase">Live-graded · every verdict is a real model call</span>
             </div>
-            <h1 className="font-mono text-5xl lg:text-6xl leading-[1.1] mb-6 font-bold tracking-tight">
+            <h1 className="font-mono text-3xl sm:text-5xl lg:text-6xl leading-[1.1] mb-6 font-bold tracking-tight">
               The Ultimate<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blood to-ember">AI Red Teaming</span><br />Battle Ground
             </h1>
             <p className="font-body text-lg text-ash leading-relaxed max-w-[520px] mb-10">
@@ -180,7 +180,7 @@ export default function Landing() {
               </GlowButton>
               <GlowButton variant="ghost" icon={BookOpen}>Read the rules</GlowButton>
             </div>
-            <div className="flex flex-wrap gap-10 bg-panel2/40 backdrop-blur-md border border-white/5 p-6 rounded-2xl w-max shadow-glass">
+            <div className="flex flex-wrap gap-6 sm:gap-10 bg-panel2/40 backdrop-blur-md border border-white/5 p-5 sm:p-6 rounded-2xl w-full sm:w-auto shadow-glass">
               <div><div className="font-mono text-3xl font-bold">{totalLabs}</div><div className="font-mono text-[11px] text-ash/80 uppercase tracking-widest mt-1">Labs</div></div>
               <div className="w-px bg-white/10" />
               <div><div className="font-mono text-3xl font-bold">{totalTiers}</div><div className="font-mono text-[11px] text-ash/80 uppercase tracking-widest mt-1">Tiers</div></div>

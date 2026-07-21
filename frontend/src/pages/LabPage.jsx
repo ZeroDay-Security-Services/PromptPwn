@@ -225,7 +225,7 @@ export default function LabPage() {
       <div className={`flex-1 ${lab.mode === "chat" ? "w-full max-w-[1400px]" : "max-w-[840px]"} mx-auto px-6 py-6 w-full flex flex-col`}>
         <div className="flex items-center justify-between mb-6">
           <button onClick={() => navigate("/ground")} className="flex items-center gap-1.5 text-ash hover:text-bone font-mono text-xs transition-colors group">
-            <ChevronLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" /> back to battle ground
+            <ChevronLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" /> <span className="hidden sm:inline">back to battle ground</span><span className="sm:hidden">back</span>
           </button>
           <div className="flex gap-2">
             <button
@@ -252,7 +252,7 @@ export default function LabPage() {
               <Pill color={DIFF_COLOR[lab.difficulty]}>{lab.difficulty}</Pill>
               {lab.solved && <Pill color="#39FF7A" filled>Solved</Pill>}
             </div>
-            <h1 className="font-mono text-4xl font-bold">{lab.name}</h1>
+            <h1 className="font-mono text-2xl sm:text-4xl font-bold">{lab.name}</h1>
           </div>
           <div className="text-right bg-[#0D0E11] border border-white/5 rounded-2xl px-6 py-3 shadow-lg">
             <div className="font-mono text-3xl text-blood font-bold drop-shadow-[0_0_8px_rgba(232,40,63,0.4)]">{lab.points}</div>
