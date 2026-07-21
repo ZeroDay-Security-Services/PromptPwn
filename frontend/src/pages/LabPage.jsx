@@ -336,9 +336,6 @@ export default function LabPage() {
                 <div className="flex-1 font-mono text-[11px] text-ash/60 flex items-center px-3">
                   {answer.trim().length > 0 ? `${answer.trim().split(/\s+/).length} words` : "Write your analysis above…"}
                 </div>
-                <GlowButton onClick={checkVerdict} disabled={checking || lab.solved || !answer.trim()} icon={ShieldCheck} className="px-4 sm:px-7 shrink-0">
-                  {checking ? "Judging…" : lab.solved ? "Solved" : "Submit"}
-                </GlowButton>
               </div>
             </div>
           )}
