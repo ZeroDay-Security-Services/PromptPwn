@@ -253,11 +253,11 @@ export default function LabPage() {
                 )}
               </div>
               
-              <div className="bg-panel border-t border-white/5 p-5 flex gap-3 relative z-10">
+              <div className="bg-panel border-t border-white/5 p-3 sm:p-5 flex gap-2 sm:gap-3 relative z-10">
                 <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter") send(); }}
                   placeholder="Type your message to the target…"
-                  className="flex-1 bg-void border border-white/10 rounded-xl px-5 py-3.5 text-bone font-body text-[14px] outline-none focus:border-blood focus:ring-1 focus:ring-blood/50 shadow-inner transition-all placeholder:text-ash/50" />
-                <GlowButton onClick={send} disabled={sending || !input.trim()} icon={Send} className="px-7">Send</GlowButton>
+                  className="flex-1 min-w-0 bg-void border border-white/10 rounded-xl px-3 sm:px-5 py-3.5 text-bone font-body text-[14px] outline-none focus:border-blood focus:ring-1 focus:ring-blood/50 shadow-inner transition-all placeholder:text-ash/50" />
+                <GlowButton onClick={send} disabled={sending || !input.trim()} icon={Send} className="px-4 sm:px-7 shrink-0">Send</GlowButton>
               </div>
             </div>
           ) : (

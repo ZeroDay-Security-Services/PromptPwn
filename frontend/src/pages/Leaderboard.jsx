@@ -54,15 +54,17 @@ export default function Leaderboard() {
             const style = RANK_COLORS[rank] || { text: "text-[#5A5F68]", bg: "bg-panel2/60 backdrop-blur-md", border: "border-white/10", shadow: "" };
             
             return (
-              <div key={r.handle} className={`flex items-center gap-4 px-5 py-4 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-glass group relative overflow-hidden ${self ? "bg-blood/10 border-blood/50 shadow-glow-blood" : `${style.bg} ${style.border} ${style.shadow}`}`}>
+              <div key={r.handle} className={`flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 sm:py-4 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-glass group relative overflow-hidden ${self ? "bg-blood/10 border-blood/50 shadow-glow-blood" : `${style.bg} ${style.border} ${style.shadow}`}`}>
                 {self && <div className="absolute top-0 left-0 w-1 h-full bg-blood" />}
-                <span className={`font-mono text-lg font-bold w-10 text-center ${style.text}`}>#{rank}</span>
-                <span className="font-mono text-base flex-1 font-semibold group-hover:text-bone transition-colors text-bone">
-                  {r.handle}
-                  {self && <span className="text-blood ml-2 text-xs uppercase tracking-wider">(you)</span>}
-                </span>
-                <span className="font-body text-sm text-[#8A8F98] bg-void/50 px-3 py-1 rounded-full border border-white/5">{r.solved} solved</span>
-                <span className="font-mono text-lg font-bold text-blood min-w-[80px] text-right drop-shadow-[0_0_5px_rgba(232,40,63,0.3)]">{r.points} <span className="text-xs text-blood/60">pts</span></span>
+                <span className={`font-mono text-base sm:text-lg font-bold w-6 sm:w-10 text-center shrink-0 ${style.text}`}>#{rank}</span>
+                <div className="flex-1 min-w-0 flex items-center gap-1.5 sm:gap-2">
+                  <span className="font-mono text-sm sm:text-base font-semibold group-hover:text-bone transition-colors text-bone truncate">
+                    {r.handle}
+                  </span>
+                  {self && <span className="text-blood text-[10px] sm:text-xs uppercase tracking-wider shrink-0">(you)</span>}
+                </div>
+                <span className="font-body text-xs sm:text-sm text-[#8A8F98] bg-void/50 px-2 sm:px-3 py-1 rounded-full border border-white/5 whitespace-nowrap shrink-0">{r.solved} <span className="hidden sm:inline">solved</span></span>
+                <span className="font-mono text-base sm:text-lg font-bold text-blood min-w-[50px] sm:min-w-[80px] text-right drop-shadow-[0_0_5px_rgba(232,40,63,0.3)] shrink-0">{r.points} <span className="text-[10px] sm:text-xs text-blood/60">pts</span></span>
               </div>
             );
           })}
