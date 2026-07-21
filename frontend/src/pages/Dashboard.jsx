@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { api } from "../api/client";
 import { Pill } from "../components/ui";
 
-const DIFF_COLOR = { Easy: "#39FF7A", Medium: "#FFD23D", Hard: "#FF6B3D", Insane: "#E8283F" };
+const DIFF_COLOR = { Easy: "#39FF7A", Medium: "#FFD23D", Hard: "#FF6B3D", Insane: "#E8283F", Impossible: "#B026FF" };
 
 function StatBlock({ label, value, icon: Icon, color }) {
   return (

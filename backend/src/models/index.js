@@ -27,7 +27,7 @@ const LabSchema = new Schema({
   _id: { type: String }, // slug, e.g. "r1"
   tierId: { type: String, ref: "Tier", required: true },
   name: { type: String, required: true },
-  difficulty: { type: String, enum: ["Easy", "Medium", "Hard", "Insane"], required: true },
+  difficulty: { type: String, enum: ["Easy", "Medium", "Hard", "Insane", "Impossible"], required: true },
   points: { type: Number, required: true },
   summary: { type: String, required: true },
   brief: { type: String, required: true },

@@ -6,7 +6,7 @@ import { useToast } from "../components/Toast";
 import { api } from "../api/client";
 import { GlowButton, Pill } from "../components/ui";
 
-const DIFF_COLOR = { Easy: "#39FF7A", Medium: "#FFD23D", Hard: "#FF6B3D", Insane: "#E8283F" };
+const DIFF_COLOR = { Easy: "#39FF7A", Medium: "#FFD23D", Hard: "#FF6B3D", Insane: "#E8283F", Impossible: "#B026FF" };
 
 function HintsPanel({ lab, token, userPoints, onHintBought }) {
   const [busyIdx, setBusyIdx] = useState(null);
@@ -85,7 +85,7 @@ export default function LabPage() {
   const [apiError, setApiError] = useState(null);
   const [resetting, setResetting] = useState(false);
   const [confirmRestart, setConfirmRestart] = useState(false);
-  const scrollRef = useRef(null);
+  const bottomRef = useRef(null);
 
   const loadLab = useCallback(async () => {
     try {
@@ -108,7 +108,7 @@ export default function LabPage() {
   }, [token, labId]);
 
   useEffect(() => { loadLab(); }, [loadLab]);
-  useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" }); }, [messages, sending]);
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, sending]);
 
   const handleHintBought = (idx, text, pointsRemaining) => {
     setLab(l => ({ ...l, hints: l.hints.map(h => h.idx === idx ? { ...h, owned: true, text } : h) }));
@@ -234,7 +234,7 @@ export default function LabPage() {
 
         <div className="grid lg:grid-cols-[2.5fr_1fr] gap-6 flex-1">
           {lab.mode === "chat" ? (
-            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl flex flex-col min-h-[650px] h-[calc(100vh-280px)] shadow-[0_15px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_30px_rgba(232,40,63,0.1)] hover:border-blood/30">
+            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl flex flex-col min-h-[400px] h-[600px] max-h-[calc(100vh-220px)] shadow-[0_15px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_30px_rgba(232,40,63,0.1)] hover:border-blood/30">
               <div className="bg-[#1A1B23] border-b border-white/5 px-4 py-3 flex items-center justify-between shrink-0 z-20 relative">
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-blood/80"></div>
@@ -244,7 +244,7 @@ export default function LabPage() {
                 <h3 className="font-mono text-[10px] text-ash/70 uppercase tracking-widest">target_session.exe</h3>
                 <div className="w-10"></div>
               </div>
-              <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-5 relative" ref={scrollRef}>
+              <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-5 relative">
                 {messages.length === 0 && (
                   <div className="font-body text-[14px] text-ash text-center mt-10 italic">
                     Connection established. Say hello to begin.
@@ -267,6 +267,7 @@ export default function LabPage() {
                     <Loader2 size={14} className="spin" /> Target is typing…
                   </div>
                 )}
+                <div ref={bottomRef} />
               </div>
               
               <div className="bg-panel border-t border-white/5 p-3 sm:p-5 flex gap-2 sm:gap-3 relative z-10">
