@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ChevronRight, Send, RotateCcw, ShieldCheck, AlertTriangle, Loader2, Lock, Unlock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Send, RotateCcw, ShieldCheck, AlertTriangle, Loader2, Lock, Unlock } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
 import { api } from "../api/client";
@@ -86,6 +86,8 @@ export default function LabPage() {
   const [resetting, setResetting] = useState(false);
   const [confirmRestart, setConfirmRestart] = useState(false);
   const bottomRef = useRef(null);
+  const [allLabIds, setAllLabIds] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(-1);
 
   const loadLab = useCallback(async () => {
     try {
@@ -98,6 +100,12 @@ export default function LabPage() {
       if (!found) { setLoadError("Lab not found."); return; }
       setLab(found);
       setTierColor(color);
+
+      // Build flat ordered list of all lab IDs for prev/next navigation
+      const flatIds = tiers.flatMap(t => t.labs.map(l => l.id));
+      setAllLabIds(flatIds);
+      setCurrentIndex(flatIds.indexOf(labId));
+
       if (found.mode === "chat") {
         const s = await api.session(token, labId);
         setMessages(s.messages || []);
@@ -108,6 +116,19 @@ export default function LabPage() {
   }, [token, labId]);
 
   useEffect(() => { loadLab(); }, [loadLab]);
+
+  // Reset transient state when navigating between labs
+  useEffect(() => {
+    setMessages([]);
+    setInput("");
+    setAnswer("");
+    setVerdict(null);
+    setApiError(null);
+    setSending(false);
+    setChecking(false);
+    setConfirmRestart(false);
+  }, [labId]);
+
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, sending]);
 
   const handleHintBought = (idx, text, pointsRemaining) => {
@@ -202,9 +223,27 @@ export default function LabPage() {
   return (
     <div className="min-h-[calc(100vh-60px)] bg-void flex flex-col">
       <div className={`flex-1 ${lab.mode === "chat" ? "w-full max-w-[1400px]" : "max-w-[840px]"} mx-auto px-6 py-6 w-full flex flex-col`}>
-        <button onClick={() => navigate("/ground")} className="flex items-center gap-1.5 text-ash hover:text-bone font-mono text-xs mb-6 transition-colors group self-start">
-          <ChevronRight size={14} className="rotate-180 group-hover:-translate-x-0.5 transition-transform" /> back to battle ground
-        </button>
+        <div className="flex items-center justify-between mb-6">
+          <button onClick={() => navigate("/ground")} className="flex items-center gap-1.5 text-ash hover:text-bone font-mono text-xs transition-colors group">
+            <ChevronLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" /> back to battle ground
+          </button>
+          <div className="flex gap-2">
+            <button
+              disabled={currentIndex <= 0}
+              onClick={() => currentIndex > 0 && navigate(`/lab/${allLabIds[currentIndex - 1]}`)}
+              className="flex items-center gap-1 font-mono text-[11px] text-ash hover:text-bone border border-white/10 hover:border-white/20 bg-panel rounded-lg px-3 py-1.5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={13} /> Prev
+            </button>
+            <button
+              disabled={currentIndex < 0 || currentIndex >= allLabIds.length - 1}
+              onClick={() => currentIndex < allLabIds.length - 1 && navigate(`/lab/${allLabIds[currentIndex + 1]}`)}
+              className="flex items-center gap-1 font-mono text-[11px] text-ash hover:text-bone border border-white/10 hover:border-white/20 bg-panel rounded-lg px-3 py-1.5 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              Next <ChevronRight size={13} />
+            </button>
+          </div>
+        </div>
 
         <div className="flex justify-between items-start flex-wrap gap-4 mb-5">
           <div>
@@ -345,6 +384,27 @@ export default function LabPage() {
               <RotateCcw size={14} className={resetting ? "spin" : ""} /> {resetting ? "Resetting Transcript..." : confirmRestart ? "Click again to confirm wipe" : "Restart Lab"}
             </button>
           </div>
+        </div>
+
+        {/* Bottom Prev / Next navigation */}
+        <div className="flex justify-between items-center mt-6 pb-4">
+          <button
+            disabled={currentIndex <= 0}
+            onClick={() => currentIndex > 0 && navigate(`/lab/${allLabIds[currentIndex - 1]}`)}
+            className="flex items-center gap-1.5 font-mono text-[11px] text-ash hover:text-bone border border-white/10 hover:border-white/20 bg-panel rounded-xl px-5 py-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft size={14} /> Previous Lab
+          </button>
+          <span className="font-mono text-[10px] text-ash/60 tracking-wider">
+            {currentIndex >= 0 ? `${currentIndex + 1} / ${allLabIds.length}` : ""}
+          </span>
+          <button
+            disabled={currentIndex < 0 || currentIndex >= allLabIds.length - 1}
+            onClick={() => currentIndex < allLabIds.length - 1 && navigate(`/lab/${allLabIds[currentIndex + 1]}`)}
+            className="flex items-center gap-1.5 font-mono text-[11px] text-ash hover:text-bone border border-white/10 hover:border-white/20 bg-panel rounded-xl px-5 py-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            Next Lab <ChevronRight size={14} />
+          </button>
         </div>
       </div>
     </div>
