@@ -77,6 +77,7 @@ export default function LabPage() {
   const [verdict, setVerdict] = useState(null);
   const [apiError, setApiError] = useState(null);
   const [resetting, setResetting] = useState(false);
+  const [confirmRestart, setConfirmRestart] = useState(false);
   const scrollRef = useRef(null);
 
   const loadLab = useCallback(async () => {
@@ -156,7 +157,12 @@ export default function LabPage() {
   };
 
   const restartLab = async () => {
-    if (!window.confirm("Are you sure you want to restart this lab? Your transcript will be cleared.")) return;
+    if (!confirmRestart) {
+      setConfirmRestart(true);
+      setTimeout(() => setConfirmRestart(false), 3000);
+      return;
+    }
+    setConfirmRestart(false);
     setResetting(true);
     try {
       if (lab.mode === "chat") {
@@ -300,8 +306,8 @@ export default function LabPage() {
             
             <HintsPanel lab={lab} token={token} userPoints={user?.points ?? 0} onHintBought={handleHintBought} />
 
-            <button onClick={restartLab} disabled={resetting} className="w-full flex items-center justify-center gap-2 border border-blood/40 bg-blood/10 hover:bg-blood/20 text-blood font-mono text-[11px] tracking-widest uppercase rounded-2xl py-4 transition-all shadow-[0_0_15px_rgba(232,40,63,0.1)] hover:shadow-[0_0_20px_rgba(232,40,63,0.2)]">
-              <RotateCcw size={14} className={resetting ? "spin" : ""} /> {resetting ? "Resetting Transcript..." : "Restart Lab"}
+            <button onClick={restartLab} disabled={resetting} className={`w-full flex items-center justify-center gap-2 border font-mono text-[11px] tracking-widest uppercase rounded-2xl py-4 transition-all ${confirmRestart ? "border-blood bg-blood/40 text-bone shadow-[0_0_20px_rgba(232,40,63,0.4)]" : "border-blood/40 bg-blood/10 hover:bg-blood/20 text-blood shadow-[0_0_15px_rgba(232,40,63,0.1)] hover:shadow-[0_0_20px_rgba(232,40,63,0.2)]"}`}>
+              <RotateCcw size={14} className={resetting ? "spin" : ""} /> {resetting ? "Resetting Transcript..." : confirmRestart ? "Click again to confirm wipe" : "Restart Lab"}
             </button>
           </div>
         </div>
