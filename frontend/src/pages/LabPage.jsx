@@ -222,7 +222,7 @@ export default function LabPage() {
 
   return (
     <div className="min-h-[calc(100vh-60px)] bg-void flex flex-col">
-      <div className={`flex-1 ${lab.mode === "chat" ? "w-full max-w-[1400px]" : "max-w-[840px]"} mx-auto px-6 py-6 w-full flex flex-col`}>
+      <div className="flex-1 w-full max-w-[1400px] mx-auto px-6 py-6 w-full flex flex-col">
         <div className="flex items-center justify-between mb-6">
           <button onClick={() => navigate("/ground")} className="flex items-center gap-1.5 text-ash hover:text-bone font-mono text-xs transition-colors group">
             <ChevronLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" /> <span className="hidden sm:inline">back to battle ground</span><span className="sm:hidden">back</span>
@@ -317,8 +317,8 @@ export default function LabPage() {
               </div>
             </div>
           ) : (
-            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl flex flex-col shadow-lg relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_30px_rgba(232,40,63,0.1)] hover:border-blood/30">
-              <div className="bg-[#1A1B23] border-b border-white/5 px-4 py-3 flex items-center justify-between">
+            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl flex flex-col min-h-[400px] h-[600px] max-h-[calc(100vh-220px)] shadow-[0_15px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_30px_rgba(232,40,63,0.1)] hover:border-blood/30">
+              <div className="bg-[#1A1B23] border-b border-white/5 px-4 py-3 flex items-center justify-between shrink-0">
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-blood/80"></div>
                   <div className="w-3 h-3 rounded-full bg-amber/80"></div>
@@ -327,10 +327,18 @@ export default function LabPage() {
                 <h3 className="font-mono text-[10px] text-ash/70 uppercase tracking-widest">security_analysis.md</h3>
                 <div className="w-10"></div>
               </div>
-              <div className="p-6">
-                <textarea value={answer} onChange={e => setAnswer(e.target.value)} rows={15} placeholder="// Name the techniques and propose your one-line system-prompt patch here..."
-                  className="w-full bg-void border border-white/5 rounded-xl p-5 text-bone font-mono text-[13px] leading-relaxed outline-none focus:border-blood/50 focus:ring-1 focus:ring-blood/20 resize-y placeholder:text-ash/40 transition-all shadow-inner" 
+              <div className="flex-1 p-5 flex flex-col">
+                <textarea value={answer} onChange={e => setAnswer(e.target.value)} placeholder="// Name the techniques and propose your one-line system-prompt patch here..."
+                  className="w-full flex-1 bg-void border border-white/5 rounded-xl p-5 text-bone font-mono text-[13px] leading-relaxed outline-none focus:border-blood/50 focus:ring-1 focus:ring-blood/20 resize-none placeholder:text-ash/40 transition-all shadow-inner" 
                   spellCheck="false" />
+              </div>
+              <div className="bg-panel border-t border-white/5 p-3 sm:p-5 flex gap-2 sm:gap-3 relative z-10">
+                <div className="flex-1 font-mono text-[11px] text-ash/60 flex items-center px-3">
+                  {answer.trim().length > 0 ? `${answer.trim().split(/\s+/).length} words` : "Write your analysis above…"}
+                </div>
+                <GlowButton onClick={checkVerdict} disabled={checking || lab.solved || !answer.trim()} icon={ShieldCheck} className="px-4 sm:px-7 shrink-0">
+                  {checking ? "Judging…" : lab.solved ? "Solved" : "Submit"}
+                </GlowButton>
               </div>
             </div>
           )}
