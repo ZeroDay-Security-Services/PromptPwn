@@ -261,10 +261,21 @@ export default function LabPage() {
               </div>
             </div>
           ) : (
-            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl p-6 shadow-lg">
-              <h3 className="font-mono text-[11px] text-ash uppercase tracking-widest mb-4">Your analysis</h3>
-              <textarea value={answer} onChange={e => setAnswer(e.target.value)} rows={12} placeholder="Name the techniques and propose your patch…"
-                className="w-full bg-void border border-white/10 rounded-xl p-4 text-bone font-body text-[14px] outline-none focus:border-blood resize-y placeholder:text-ash/50 transition-colors" />
+            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl flex flex-col shadow-lg relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_30px_rgba(232,40,63,0.1)] hover:border-blood/30">
+              <div className="bg-[#1A1B23] border-b border-white/5 px-4 py-3 flex items-center justify-between">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-blood/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#39FF7A]/80"></div>
+                </div>
+                <h3 className="font-mono text-[10px] text-ash/70 uppercase tracking-widest">security_analysis.md</h3>
+                <div className="w-10"></div>
+              </div>
+              <div className="p-6">
+                <textarea value={answer} onChange={e => setAnswer(e.target.value)} rows={15} placeholder="// Name the techniques and propose your one-line system-prompt patch here..."
+                  className="w-full bg-void border border-white/5 rounded-xl p-5 text-bone font-mono text-[13px] leading-relaxed outline-none focus:border-blood/50 focus:ring-1 focus:ring-blood/20 resize-y placeholder:text-ash/40 transition-all shadow-inner" 
+                  spellCheck="false" />
+              </div>
             </div>
           )}
 
