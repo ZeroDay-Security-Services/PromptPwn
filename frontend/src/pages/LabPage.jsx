@@ -26,8 +26,15 @@ function HintsPanel({ lab, token, userPoints, onHintBought }) {
   };
 
   return (
-    <div className="bg-[#0D0E11] border border-white/5 rounded-2xl p-5 shadow-lg">
-      <h3 className="font-mono text-[11px] text-ash uppercase tracking-widest mb-4">Hints ({ownedCount}/{lab.hints.length})</h3>
+    <div className="bg-[#0D0E11] border border-white/5 rounded-2xl p-5 shadow-lg relative overflow-hidden group transition-all duration-300 hover:border-white/10">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-mono text-[11px] text-ash uppercase tracking-widest">Hints ({ownedCount}/{lab.hints.length})</h3>
+        <div className="flex gap-1.5 opacity-40">
+          <div className="w-2 h-2 rounded-full bg-blood"></div>
+          <div className="w-2 h-2 rounded-full bg-amber"></div>
+          <div className="w-2 h-2 rounded-full bg-[#39FF7A]"></div>
+        </div>
+      </div>
       <div className="flex flex-col gap-3">
         {lab.hints.map((h) => (
           <div key={h.idx} className={`border rounded-xl px-4 py-3.5 transition-all ${h.owned ? "bg-panel border-white/10" : "bg-[#0A0B0D] border-white/5"}`}>
@@ -227,8 +234,17 @@ export default function LabPage() {
 
         <div className="grid lg:grid-cols-[2.5fr_1fr] gap-6 flex-1">
           {lab.mode === "chat" ? (
-            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl flex flex-col min-h-[650px] h-[calc(100vh-280px)] shadow-[0_15px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
-              <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-5" ref={scrollRef}>
+            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl flex flex-col min-h-[650px] h-[calc(100vh-280px)] shadow-[0_15px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_30px_rgba(232,40,63,0.1)] hover:border-blood/30">
+              <div className="bg-[#1A1B23] border-b border-white/5 px-4 py-3 flex items-center justify-between shrink-0 z-20 relative">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-blood/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#39FF7A]/80"></div>
+                </div>
+                <h3 className="font-mono text-[10px] text-ash/70 uppercase tracking-widest">target_session.exe</h3>
+                <div className="w-10"></div>
+              </div>
+              <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-5 relative" ref={scrollRef}>
                 {messages.length === 0 && (
                   <div className="font-body text-[14px] text-ash text-center mt-10 italic">
                     Connection established. Say hello to begin.
@@ -280,8 +296,15 @@ export default function LabPage() {
           )}
 
           <div className="flex flex-col gap-5 h-fit">
-            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl p-5 shadow-lg">
-              <h3 className="font-mono text-[11px] text-ash uppercase tracking-widest mb-4">Verdict</h3>
+            <div className="bg-[#0D0E11] border border-white/5 rounded-2xl p-5 shadow-lg relative overflow-hidden group transition-all duration-300 hover:border-white/10">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-mono text-[11px] text-ash uppercase tracking-widest">Verdict</h3>
+                <div className="flex gap-1.5 opacity-40">
+                  <div className="w-2 h-2 rounded-full bg-blood"></div>
+                  <div className="w-2 h-2 rounded-full bg-amber"></div>
+                  <div className="w-2 h-2 rounded-full bg-[#39FF7A]"></div>
+                </div>
+              </div>
               
               <GlowButton variant={lab.solved ? "default" : "term"} className="w-full justify-center h-12" icon={ShieldCheck}
                 disabled={checking || lab.solved || (lab.mode === "chat" ? messages.filter(m => m.role === "assistant").length === 0 : !answer.trim())}
