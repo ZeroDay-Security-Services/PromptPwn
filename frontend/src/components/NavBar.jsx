@@ -48,13 +48,13 @@ export default function NavBar() {
           <Zap size={14} className="fill-blood/40" /> <span className="font-bold">{user?.points ?? 0}</span>
         </div>
         
-        <div className="flex items-center gap-3 bg-panel border border-white/5 rounded-full px-1 py-1 pr-4 shadow-glass">
+        <div className="flex items-center gap-3 bg-panel border border-white/5 rounded-full px-1 py-1 pr-3 sm:pr-4 shadow-glass">
           <div className="w-8 h-8 rounded-full bg-panel2 border border-white/10 flex items-center justify-center shrink-0">
             <User size={15} className="text-ash" />
           </div>
-          <div className="flex flex-col hidden sm:flex">
-            <span className="font-mono text-[13px] font-semibold text-bone leading-none mb-1">{user?.handle}</span>
-            {user?.email && <span className="font-body text-[10px] text-ash/80 leading-none truncate max-w-[120px]">{user.email}</span>}
+          <div className="flex flex-col">
+            <span className="font-mono text-[11px] sm:text-[13px] font-semibold text-bone leading-none mb-0.5 sm:mb-1 truncate max-w-[90px] sm:max-w-[150px]">{user?.handle}</span>
+            {user?.email && <span className="font-body text-[10px] text-ash/80 leading-none truncate max-w-[90px] sm:max-w-[120px] hidden sm:block">{user.email}</span>}
           </div>
         </div>
 
