@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Skull, Terminal, Eye, EyeOff, BookOpen, AlertTriangle } from "lucide-react";
+import { Skull, Terminal, Eye, EyeOff, BookOpen, AlertTriangle, Shield, Ban, Server, Code, Users, Crosshair, Scale, FileWarning } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { GlowButton } from "../components/ui";
 
@@ -148,7 +148,7 @@ function AuthPanel() {
 }
 
 export default function Landing() {
-  const totalLabs = 30, totalTiers = 6, totalPoints = 11500;
+  const totalLabs = 30, totalTiers = 6, totalPoints = 16310;
   return (
     <div className="min-h-screen relative overflow-hidden bg-void">
       {/* Background gradients */}
@@ -178,7 +178,7 @@ export default function Landing() {
               <GlowButton icon={Terminal} onClick={() => document.getElementById("ppwn-auth")?.scrollIntoView({ behavior: "smooth" })}>
                 Enter the ground
               </GlowButton>
-              <GlowButton variant="ghost" icon={BookOpen}>Read the rules</GlowButton>
+              <GlowButton variant="ghost" icon={BookOpen} onClick={() => document.getElementById("ppwn-rules")?.scrollIntoView({ behavior: "smooth" })}>Read the rules</GlowButton>
             </div>
             <div className="flex flex-wrap gap-6 sm:gap-10 bg-panel2/40 backdrop-blur-md border border-white/5 p-5 sm:p-6 rounded-2xl w-full sm:w-auto shadow-glass">
               <div><div className="font-mono text-3xl font-bold">{totalLabs}</div><div className="font-mono text-[11px] text-ash/80 uppercase tracking-widest mt-1">Labs</div></div>
@@ -205,6 +205,47 @@ export default function Landing() {
               <div className="font-body text-[13px] text-ash leading-relaxed relative z-10">{t.tagline}</div>
             </div>
           ))}
+        </div>
+
+        {/* ─── Rules of Engagement ─── */}
+        <div id="ppwn-rules" className="mt-32 scroll-mt-8">
+          <div className="flex flex-col items-center mb-12 text-center">
+            <div className="w-16 h-16 rounded-full bg-panel2 border border-white/10 flex items-center justify-center mb-6 shadow-glass">
+              <Shield size={32} className="text-blood drop-shadow-[0_0_10px_rgba(232,40,63,0.5)]" />
+            </div>
+            <h2 className="font-mono text-3xl sm:text-4xl mb-3 font-bold">Rules of Engagement</h2>
+            <p className="font-body text-[14px] text-ash max-w-[500px]">By entering the battle ground you agree to these terms. Violations may result in permanent disqualification and account removal.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[960px] mx-auto">
+            {[
+              { icon: Ban, title: "No Automation", desc: "All interactions must be manual. Automated scripts, bots, or programmatic API calls against lab targets are strictly prohibited." },
+              { icon: Server, title: "No Denial of Service", desc: "Do not flood, spam, or otherwise attempt to degrade service availability. Rate limits exist — respect them." },
+              { icon: Code, title: "No Remote Code Execution", desc: "Labs are sandboxed conversations. Do not attempt to escape the sandbox, execute system commands, or access infrastructure." },
+              { icon: Users, title: "No Account Sharing", desc: "One operator per callsign. Sharing credentials, sessions, or solutions with others is grounds for removal." },
+              { icon: Crosshair, title: "No Solution Sharing", desc: "Do not publish, screenshot, or distribute working payloads, win conditions, or judge bypass techniques publicly." },
+              { icon: Scale, title: "Fair Play Only", desc: "Exploiting platform bugs, manipulating leaderboard data, or reverse-engineering backend logic to skip verification is forbidden." },
+              { icon: FileWarning, title: "No Harmful Content", desc: "Do not submit content that is illegal, threatening, or targets real individuals. Labs are educational — keep it professional." },
+              { icon: Shield, title: "Respect the Sandbox", desc: "Every lab targets a simulated persona, never a production model. Treat the exercise as a learning experience, not a weapon." },
+            ].map((rule, i) => (
+              <div key={i} className="bg-panel/40 backdrop-blur-sm border border-wire rounded-2xl p-6 relative overflow-hidden group transition-all hover:-translate-y-0.5 hover:shadow-glass">
+                <div className="absolute top-0 left-0 w-1 h-full bg-blood/60 group-hover:bg-blood transition-colors" />
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-blood/10 border border-blood/20 flex items-center justify-center shrink-0 group-hover:bg-blood/20 transition-colors">
+                    <rule.icon size={18} className="text-blood" />
+                  </div>
+                  <div>
+                    <div className="font-mono text-[14px] font-bold text-bone mb-1.5">{rule.title}</div>
+                    <div className="font-body text-[13px] text-ash leading-relaxed">{rule.desc}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="font-mono text-[11px] text-ash/50 uppercase tracking-widest">Violation of any rule may result in immediate ban · no appeals</p>
+          </div>
         </div>
 
         <div id="ppwn-auth" className="flex justify-center mt-32 relative">

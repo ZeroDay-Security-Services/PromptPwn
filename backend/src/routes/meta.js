@@ -7,13 +7,20 @@ const router = express.Router();
 router.get("/leaderboard", requireAuth, async (req, res, next) => {
   try {
     const limit = Math.min(Number(req.query.limit) || 50, 200);
-    const users = await User.find().sort({ points: -1 }).limit(limit).select("handle points").lean();
+    const users = await User.find().sort({ points: -1, createdAt: 1 }).limit(limit).select("handle points createdAt").lean();
     const solveCounts = await Solve.aggregate([
       { $match: { userId: { $in: users.map(u => u._id) } } },
       { $group: { _id: "$userId", count: { $sum: 1 } } },
     ]);
     const countByUser = new Map(solveCounts.map(s => [s._id.toString(), s.count]));
-    const leaderboard = users.map(u => ({ handle: u.handle, points: u.points, solved: countByUser.get(u._id.toString()) || 0 }));
+    const leaderboard = users
+      .map(u => ({ handle: u.handle, points: u.points, solved: countByUser.get(u._id.toString()) || 0, joined: u.createdAt }))
+      .sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        if (b.solved !== a.solved) return b.solved - a.solved;
+        return new Date(a.joined) - new Date(b.joined);
+      })
+      .map(({ joined, ...rest }) => rest);
     res.json({ leaderboard });
   } catch (err) { next(err); }
 });
