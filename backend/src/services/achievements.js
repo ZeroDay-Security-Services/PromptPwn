@@ -19,6 +19,8 @@ const RULES = {
   clean_sweep: (snap) => snap.allLabIds.length > 0 &&
     snap.allLabIds.every(id => snap.solvedLabIds.has(id)) &&
     snap.cleanSolveCount === snap.allLabIds.length,
+  halfway: (snap) => snap.solvedLabIds.size >= 15,
+  ten_k: (snap) => snap.points >= 10000,
 };
 
 /**

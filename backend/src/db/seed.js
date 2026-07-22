@@ -218,6 +218,8 @@ const ACHIEVEMENTS = [
   { _id: "boss_down", name: "Vault Breaker", description: "Defeat the Final Gauntlet" },
   { _id: "five_hundred", name: "Half a Grand", description: "Earn 500+ points" },
   { _id: "clean_sweep", name: "Flawless Victory", description: "Solve every lab with no hints purchased" },
+  { _id: "halfway", name: "Halfway There", description: "Solve 15 labs" },
+  { _id: "ten_k", name: "Ten Thousand Club", description: "Earn 10,000+ points" },
 ];
 
 async function seed() {
