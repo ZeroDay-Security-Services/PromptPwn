@@ -11,12 +11,28 @@ if (!process.env.JWT_SECRET) {
 const authRoutes = require("./routes/auth");
 const labsRoutes = require("./routes/labs");
 const metaRoutes = require("./routes/meta");
+const { seedUsers } = require("./db/seed-users");
 
 const app = express();
 app.use(cors({ origin: process.env.CORS_ORIGIN || "*" }));
 app.use(express.json({ limit: "150kb" }));
 
 app.get("/api/health", (req, res) => res.json({ ok: true, service: "promptpwn-api" }));
+
+// ── TEMPORARY — remove after triggering ──────────────────────────────────────
+app.get("/api/admin/seed-users", async (req, res) => {
+  if (req.query.key !== (process.env.SEED_KEY || "zeroday-seed-2026")) {
+    return res.status(401).json({ error: "unauthorized" });
+  }
+  try {
+    await seedUsers();
+    res.json({ ok: true, message: "Users seeded successfully!" });
+  } catch (err) {
+    console.error("User seed error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+// ─────────────────────────────────────────────────────────────────────────────
 
 app.use("/api/auth", authRoutes);
 app.use("/api/labs", labsRoutes);
