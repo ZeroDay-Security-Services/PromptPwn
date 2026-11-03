@@ -12,6 +12,7 @@ const authRoutes = require("./routes/auth");
 const labsRoutes = require("./routes/labs");
 const metaRoutes = require("./routes/meta");
 const { seed } = require("./db/seed");
+const { seedUsers } = require("./db/seed-users");
 
 const app = express();
 app.use(cors({ origin: process.env.CORS_ORIGIN || "*" }));
@@ -30,6 +31,20 @@ app.get("/api/admin/seed", async (req, res) => {
     res.json({ ok: true, message: "Database seeded successfully!" });
   } catch (err) {
     console.error("Seed error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/admin/seed-users", async (req, res) => {
+  const key = req.query.key;
+  if (key !== (process.env.SEED_KEY || "zeroday-seed-2026")) {
+    return res.status(401).json({ error: "unauthorized" });
+  }
+  try {
+    await seedUsers();
+    res.json({ ok: true, message: "Users seeded successfully!" });
+  } catch (err) {
+    console.error("User seed error:", err);
     res.status(500).json({ error: err.message });
   }
 });
