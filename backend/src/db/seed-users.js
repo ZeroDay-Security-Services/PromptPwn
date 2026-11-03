@@ -86,12 +86,20 @@ async function seedUsers() {
     const existing = await User.findOne({ handle: u.handle });
     if (existing) { skipped++; continue; }
 
-    const user = await User.create({
-      handle: u.handle,
-      email: `${u.handle.toLowerCase().replace(/[^a-z0-9]/g, "")}@promptpwn.fake`,
-      passwordHash: PASSWORD_HASH,
-      points: u.points,
-    });
+    let user;
+    try {
+      // Use handle with underscores preserved to ensure unique emails
+      const emailHandle = u.handle.toLowerCase().replace(/[^a-z0-9_]/g, "");
+      user = await User.create({
+        handle: u.handle,
+        email: `${emailHandle}@promptpwn.fake`,
+        passwordHash: PASSWORD_HASH,
+        points: u.points,
+      });
+    } catch (e) {
+      if (e.code === 11000) { skipped++; continue; } // already exists
+      throw e;
+    }
 
     if (u.labsSolved > 0 && labs.length > 0) {
       const toSolve = labPool.slice(0, Math.min(u.labsSolved, labs.length));
@@ -118,3 +126,4 @@ if (require.main === module) {
 }
 
 module.exports = { seedUsers };
+
